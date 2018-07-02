@@ -16,16 +16,16 @@ ARG DOWNLOAD_URL=https://media.forgecdn.net/files/2574/714/FTBRevelationServer_2
 
 # Creating user and downloading files
 RUN useradd -m -U minecraft && \
-	wget --no-check-certificate ${DOWNLOAD_URL} -o server.zip && \
+	wget -q --show-progress --no-check-certificate ${DOWNLOAD_URL} -O server.zip && \
 	unzip server.zip && \
 	rm server.zip && \
 	chmod u+x FTBInstall.sh ServerStart.sh && \
+	mkdir -p /minecraft/world && \
+	mkdir -p /minecraft/cfg && \
+	mkdir -p /minecraft/backups && \
 	echo "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula)." > eula.txt && \
 	echo "$(date)" >> eula.txt && \
 	echo "eula=TRUE" >> eula.txt && \
-	mkdir -p /minecraft/world && \
-	mkdir -p /minecraft/cfg && \
-	mkdir -p /minecraft/backups &&\
 	echo "[]" > /minecraft/cfg/ops.json && \
 	echo "[]" > /minecraft/cfg/whitelist.json && \
 	echo "[]" > /minecraft/cfg/banned-ips.json && \
@@ -43,8 +43,11 @@ USER minecraft
 # Running install
 RUN /minecraft/FTBInstall.sh
 
-COPY ./settings-local.sh /minecraft/cfg/settings-local.sh
-RUN ln -s /minecraft/cfg/settings-local.sh /minecraft/settings-local.sh 
+# Set some default env variable
+ENV JAVACMD="java"
+ENV MIN_RAM="1G"
+ENV MAX_RAM="2G"
+ENV JAVA_PARAMETERS="-XX:+UseParNewGC -XX:+UseConcMarkSweepGC"
 
 # Expose port 25565
 EXPOSE 25565
