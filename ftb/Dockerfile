@@ -3,8 +3,8 @@ FROM java:8-jre
 # Updating container
 RUN apt-get update && \
 	apt-get upgrade --yes --force-yes && \
-	apt-get clean && \ 
-	rm -rf /var/lib/apt/lists/* 
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/*
 
 # Setting workdir
 WORKDIR /minecraft
@@ -12,7 +12,7 @@ WORKDIR /minecraft
 # Changing user to root
 USER root
 
-ARG DOWNLOAD_URL=https://media.forgecdn.net/files/2574/714/FTBRevelationServer_2.1.0.zip
+ARG DOWNLOAD_URL=https://media.forgecdn.net/files/2637/817/FTBRevelationServer_2.6.0.zip
 
 # Creating user and downloading files
 RUN useradd -m -U minecraft && \
@@ -45,9 +45,8 @@ RUN /minecraft/FTBInstall.sh
 
 # Set some default env variable
 ENV JAVACMD="java"
-ENV MIN_RAM="1G"
 ENV MAX_RAM="2G"
-ENV JAVA_PARAMETERS="-XX:+UseParNewGC -XX:+UseConcMarkSweepGC"
+ENV JAVA_PARAMETERS="-XX:+UseParNewGC -XX:+CMSIncrementalPacing -XX:+CMSClassUnloadingEnabled -XX:ParallelGCThreads=5 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10"
 
 # Expose port 25565
 EXPOSE 25565

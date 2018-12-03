@@ -1,7 +1,7 @@
 BASE_REPO=latenssi
 
-FTB_REVELATION_VERSION=2.1.0
-FTB_REVELATION_DL_URL=https://media.forgecdn.net/files/2574/714/FTBRevelationServer_2.1.0.zip
+FTB_REVELATION_VERSION=2.6.0
+FTB_REVELATION_DL_URL=https://media.forgecdn.net/files/2637/817/FTBRevelationServer_2.6.0.zip
 
 ftb-revelation:
 	docker build \
