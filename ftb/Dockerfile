@@ -43,6 +43,13 @@ USER minecraft
 # Running install
 RUN /minecraft/FTBInstall.sh
 
+# Remove some lines from settings that we are setting by hand in Dockerfile
+RUN sed -i '/# Default arguments for JVM/d' ./settings.sh \
+	&& sed -i '/## Copy following lines/d' ./settings.sh \
+	&& sed -i '/export JAVACMD=/d' ./settings.sh \
+	&& sed -i '/export MAX_RAM=/d' ./settings.sh \
+	&& sed -i '/export JAVA_PARAMETERS=/d' ./settings.sh
+
 # Set some default env variable
 ENV JAVACMD="java"
 ENV MAX_RAM="2G"
